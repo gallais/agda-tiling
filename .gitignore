@@ -1,3 +1,7 @@
 *.agdai
 MAlonzo/**
 *~
+*.png
+MAlonzo/
+dist-newstyle/
+_build/
