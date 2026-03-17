@@ -40,8 +40,8 @@ flower = border 3 white
 
 main : Main
 main = run do
- savePngImage "test.png"
-    $ Image 1500 500 RGB8 ∋_
+ savePngImage "flower.png"
+    $ Image 960 360 RGB8 ∋_
     $ tile
     $ scale 4
     $ flower

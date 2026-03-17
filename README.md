@@ -3,11 +3,13 @@ Tiling DSL for Agda
 
 ## TODO
 
-* [ ] Cabal file for Main
-* [ ] Makefile
 * [ ] More examples
 * [ ] Support for more pixel types
 * [ ] Support for loading an image from the disk
+
+## Examples
+
+![Flower tiling](examples/flower.png)
 
 ## History
 
