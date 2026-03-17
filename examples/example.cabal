@@ -1,0 +1,27 @@
+cabal-version:   2.4
+name:            example
+version:         0.1
+build-type:      Simple
+description:     Example use of the tiling DSL for Agda
+license:         MIT
+
+common common-build-parameters
+  default-language:
+    Haskell2010
+
+  default-extensions:
+    PatternGuards
+    PatternSynonyms
+
+  build-depends:
+      base >= 4.12 && < 4.22
+    , text >= 2.0 && <2.2
+    , JuicyPixels >= 3.3 && <3.4
+
+  ghc-options: -Wno-missing-home-modules
+
+executable tiling
+  import:           common-build-parameters
+  hs-source-dirs:   _build
+  main-is:          MAlonzo/Code/Main.hs
+  ghc-options:      -main-is MAlonzo.Code.Main

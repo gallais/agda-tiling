@@ -14,6 +14,7 @@ open RGB8
 postulate
   primSavePngImage : String → (m n : ℕ) → (ℕ → ℕ → RGB8) → Prim.IO {0ℓ} ⊤
 
+{-# FOREIGN GHC import Codec.Picture #-}
 {-# FOREIGN GHC import qualified Data.Text as T #-}
 {-# COMPILE GHC primSavePngImage = \ fp m n fun ->
       savePngImage (T.unpack fp)

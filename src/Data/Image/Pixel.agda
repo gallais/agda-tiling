@@ -54,4 +54,4 @@ record CMYK8 : Set where
     yellow  : Word8
     black   : Word8
 
-{-# COMPILE GHC CMYK8 = data PixelCYMK8 (PixelCYMK8) #-}
+{-# COMPILE GHC CMYK8 = data PixelCMYK8 (PixelCMYK8) #-}

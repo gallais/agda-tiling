@@ -1,0 +1,4 @@
+name: example
+include: ../src .
+depend: standard-library-2.3
+flags: -WnoUnsupportedIndexedMatch
