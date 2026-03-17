@@ -9,11 +9,12 @@
 module Data.Nat.Bounded.Base where
 
 
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (T; true; false)
 import Data.Bool.Properties as Boolₚ
 open import Data.Irrelevant as Irrelevant using (Irrelevant; [_])
-open import Data.Nat.Base as ℕ using (ℕ; suc; z≤n; z<s; s<s; s<s⁻¹)
+open import Data.Nat.Base as ℕ using (ℕ; suc; z≤n; z<s; s<s; s<s⁻¹; NonZero)
 import Data.Nat.Properties as ℕₚ
+import Data.Nat.DivMod as ℕₚ
 open import Data.Refinement as Refinement using (Refinement; _,_; Refinement-syntax)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 
@@ -99,6 +100,9 @@ fromℕ n = n , [ ℕₚ.n<1+n n ]
 fromℕ< : .(m ℕ.< n) → Fin n
 fromℕ< m<n = _ , [ m<n ]
 
+fromℕ<ᵇ : T (m ℕ.<ᵇ n) → Fin n
+fromℕ<ᵇ p = fromℕ< (ℕₚ.<ᵇ⇒< _ _ p)
+
 -- fromℕ<″ m _ = "m".
 
 open import Relation.Binary using (_⇒_)
@@ -170,6 +174,8 @@ join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
 join m n = [ _↑ˡ n , m ↑ʳ_ ]′
 
 
+------------------------------------------------------------------------
+-- Operations on Fins
 
 -- opposite "i" = "pred n - i" (i.e. the additive inverse).
 
@@ -177,3 +183,16 @@ opposite : Fin n → Fin n
 opposite {n} i@(k , prf)
   = n ℕ.∸ suc k
   , [ ℕₚ.m<n+o⇒m∸n<o n (suc k) {n} ⦃ nonZero i ⦄ (ℕₚ.m<n+m n z<s) ]
+
+
+_%_ : ℕ → (i : ℕ) → .{{NonZero i}} → Fin i
+k % i = k ℕ.% i , [ ℕₚ.m%n<n k i ]
+
+quot : ∀ {w} i → .{{NonZero i}} → Fin (i ℕ.* w) → Fin w
+quot {w} i (k , prf) = k ℕ./ i , Irrelevant.map go prf where
+
+  go : k ℕ.< i ℕ.* w → k ℕ./ i ℕ.< w
+  go prf = ℕₚ.m<n*o⇒m/o<n $ let open ℕₚ.≤-Reasoning in begin-strict
+    k       <⟨ prf ⟩
+    i ℕ.* w ≡⟨ ℕₚ.*-comm i w ⟩
+    w ℕ.* i ∎
