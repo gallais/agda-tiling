@@ -1,15 +1,15 @@
 module Data.Image where
 
-open import Data.Bool.Base using (true)
+open import Data.Bool.Base using (true; if_then_else_)
 open import Data.Empty using (⊥-elim)
-open import Data.Maybe.Base using (Maybe; fromMaybe)
-open import Data.Nat.Base as ℕ using (ℕ; suc; NonZero)
+open import Data.Maybe.Base using (Maybe; nothing; just; fromMaybe)
+open import Data.Nat as ℕ using (ℕ; suc; NonZero)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Bounded.Base as Fin using (Fin; quot; _%_; splitAt; opposite)
 open import Data.Nat.Bounded.Properties using (¬Fin0; _≡?_)
 open import Data.Sum.Base using ([_,_]′)
 
-open import Relation.Binary.PropositionalEquality using (subst)
+open import Relation.Binary.PropositionalEquality using (_≡_; sym; subst)
 open import Relation.Nullary.Decidable using (does)
 
 open import Function.Base using (_$_; _∘_; flip)
@@ -28,6 +28,13 @@ record Image (width height : ℕ) {ℓ} (A : Set ℓ) : Set ℓ where
   constructor mkImage
   field runImage : Fin width → Fin height → A
 open Image public
+
+
+hCast : ∀ {m} → .(w ≡ m) → Image w h A → Image m h A
+hCast eq img .runImage k l = runImage img (Fin.cast (sym eq) k) l
+
+vCast : ∀ {n} → .(h ≡ n) → Image w h A → Image w n A
+vCast eq img .runImage k l = runImage img k (Fin.cast (sym eq) l)
 
 map : (A → B) → Image w h A → Image w h B
 map f tile .runImage k l = f (tile .runImage k l)
@@ -109,6 +116,19 @@ border i col tile
   = fill _ i col
   ─ fill i _ col ∣ tile ∣ fill i _ col
   ─ fill _ i col
+
+hLine : (w h : ℕ) → Fin h → ℕ → A → Image w h (Maybe A)
+hLine w h y d px .runImage k l
+  = if does (ℕ.∣ Fin.toℕ y - Fin.toℕ l ∣′ ℕ.<? d) then just px else nothing
+
+vLine : (w h : ℕ) → Fin w → ℕ → A → Image w h (Maybe A)
+vLine w h x d px .runImage k l
+  = if does (ℕ.∣ Fin.toℕ x - Fin.toℕ k ∣′ ℕ.<? d) then just px else nothing
+
+-- Drawing a diagonal line from the bottom left to the top right
+diagonal : (n d : ℕ) (px : A) → Image n n (Maybe A)
+diagonal n d px = hMirror $ mkImage {n} $ λ k l →
+  if does (ℕ.∣ Fin.toℕ k - Fin.toℕ l ∣′ ℕ.<? d) then just px else nothing
 
 -- Taking the top left quadrant and producing a full rectangle by
 -- symmetries: e.g.  if the tile is the image '⬀', quadrants

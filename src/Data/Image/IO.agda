@@ -3,7 +3,7 @@
 module Data.Image.IO where
 
 open import Data.Bool.Properties using (T?)
-open import Data.Image using (Image; mkImage)
+open import Data.Image using (Image; runImage; vMirror)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat.Base as ℕ using (ℕ)
 open import Data.Nat.Bounded.Base using (Fin; fromℕ<ᵇ)
@@ -21,7 +21,7 @@ open RGB8
 import Data.Image.IO.Primitive as Prim
 
 savePngImage : {m n : ℕ} → String → Image m n RGB8 → IO {0ℓ} _
-savePngImage {m} {n} fp (mkImage fun)
+savePngImage {m} {n} fp img
   = lift! (lift (Prim.primSavePngImage fp m n fun′)) where
 
   cast : (m n : ℕ) → Maybe (Fin m)
@@ -31,5 +31,5 @@ savePngImage {m} {n} fp (mkImage fun)
 
   fun′ : (ℕ → ℕ → RGB8)
   fun′ k l with cast m k | cast n l
-  ... | just x | just y = fun x y
+  ... | just x | just y = runImage img x y
   ... | _ | _ = black

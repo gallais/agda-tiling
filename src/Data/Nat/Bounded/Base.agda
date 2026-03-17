@@ -18,9 +18,12 @@ import Data.Nat.DivMod as ℕₚ
 open import Data.Refinement as Refinement using (Refinement; _,_; Refinement-syntax)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 
-open import Function.Base using (id; _$_; _∘_)
+open import Function.Base using (id; _$_; _∘_; _on_)
 open import Function.Bundles using (Equivalence); open Equivalence using (from)
 
+open import Level using (0ℓ)
+
+open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong; subst)
 open import Relation.Nullary using (recompute; T?; yes; no)
 
@@ -173,6 +176,8 @@ splitAt m i@(k , prf) with T? (k ℕ.<ᵇ m)
 join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
 join m n = [ _↑ˡ n , m ↑ʳ_ ]′
 
+_<_ : Rel (Fin n) 0ℓ
+_<_ = ℕ._<_ on toℕ
 
 ------------------------------------------------------------------------
 -- Operations on Fins

@@ -14,7 +14,7 @@ open import Data.Refinement as Refinement using (_,_)
 
 open import Function.Base using (_∘_)
 
-open import Relation.Binary.Definitions using (DecidableEquality)
+open import Relation.Binary.Definitions using (Decidable; DecidableEquality)
 open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; cong; refl)
 import Relation.Nullary.Decidable.Core as Dec
 open import Relation.Nullary.Negation.Core using (¬_)
@@ -36,6 +36,8 @@ fsuc-injective {k = kv , kprf} {l = lv , lprf} refl = cong (kv ,_) refl
 eqFin : ∀ {n} {k l : Fin n} → Refinement.value k ≡ Refinement.value l → k ≡ l
 eqFin {n} {k , p} {k , q} refl = refl
 
-
 _≡?_ : DecidableEquality (Fin n)
 (k , p) ≡? (l , q) = Dec.map′ eqFin (cong Refinement.value) (k ℕ.≟ l)
+
+_<?_ : Decidable {A = Fin n} _<_
+k <? l = _ ℕ.<? _

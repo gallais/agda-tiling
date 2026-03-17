@@ -1,6 +1,11 @@
 # agda-tiling
 Tiling DSL for Agda
 
+## Dependencies
+
+* Agda 2.8.0
+* Standard library 2.3
+
 ## TODO
 
 * [ ] More examples
