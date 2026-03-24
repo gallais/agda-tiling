@@ -69,6 +69,9 @@ hStitch {wl = wl} {h = h} {wr = wr} lft rgt
       (lft ∣ fill wr h nothing)
       (hCast (ℕₚ.+-suc wl wr) $ fill wl h nothing ∣ rgt)
 
+empty : (w h : ℕ) → Image w h (Maybe A)
+empty w h = fill w h nothing
+
 grid : Image 33 29 RGB8
 grid =
   let line = diagonal 10 1 fullred in
@@ -77,27 +80,27 @@ grid =
              ∣ diagonal 3 1 fullred
   in
   let lft : Image 10 21 _; lft = vStitch tria sub in
-  let rct : Image 13 27 _; rct = border 1 (just fullred) (fill 11 25 nothing) in
+  let rct : Image 13 27 _; rct = border 1 (just fullred) (empty 11 25) in
   let hlf = zipWith _<∣>_
-              (fill 16 6 nothing ─ (fill 6 21 nothing ∣ lft))
-              (rct ∣ fill 3 27 nothing)
+              (empty 16 6 ─ (empty 6 21 ∣ lft))
+              (rct ∣ empty 3 27)
               in
-  let ovl = fill 31 9 nothing
+  let ovl = empty 31 9
         ─ (hLine 10 11 (fromℕ<ᵇ {m = 2} _) 1 fullred
-          ∣ (fill 7 2 nothing
+          ∣ (empty 7 2
             ─ vMirror (diagonal 7 1 fullred)
-            ─ fill 7 2 nothing)
+            ─ empty 7 2)
           ∣ hLine 8 11 (fromℕ<ᵇ {m = 9} _) 1 fullred
-          ∣ fill 6 11 nothing)
-        ─ fill 31 7 nothing in
-  let ovr = fill 31 9 nothing
-        ─ (fill 6 11 nothing
+          ∣ empty 6 11)
+        ─ empty 31 7 in
+  let ovr = empty 31 9
+        ─ (empty 6 11
           ∣ hLine 8 11 (fromℕ<ᵇ {m = 9} _) 1 fullred
-          ∣ (fill 7 2 nothing
+          ∣ (empty 7 2
             ─ diagonal 7 1 fullred
-            ─ fill 7 2 nothing)
+            ─ empty 7 2)
           ∣ hLine 10 11 (fromℕ<ᵇ {m = 2} _) 1 fullred)
-        ─ fill 31 7 nothing in
+        ─ empty 31 7 in
 
 
   map (fromMaybe navy)
@@ -105,6 +108,26 @@ grid =
     $ zipWith _<∣>_
         (hStitch hlf (hMirror hlf))
         (zipWith _<∣>_ ovl ovr)
+
+glamis : Image _ _ RGB8
+glamis =
+  let box = border 1 nothing
+           $ (((diagonal 30 4 navy ∣ hLine 20 30 (fromℕ<ᵇ {m = 0} _) 4 navy)
+             ─ vLine 50 40 (fromℕ<ᵇ {m = 0} _) 4 navy)
+             ∣ (vLine 4 50 (fromℕ<ᵇ {m = 0} _) 4 navy ─ empty 4 20))
+             ─ (hLine 30 4 (fromℕ<ᵇ {m = 0} _) 4 navy ∣ empty 24 4)
+
+  in
+  let arc = disc 56 76 (fromℕ<ᵇ {m = 54} _) (fromℕ<ᵇ {m = 74} _) 24 navy in
+  let quad = zipWith _<∣>_ (empty 56 68 ─ empty 48 8 ∣
+                            (vLine 8 4 (fromℕ<ᵇ {m = 7} _) 4 skyblue
+                             ─ hLine 8 4 (fromℕ<ᵇ {m = 0} _) 4 skyblue))
+           $ zipWith _<∣>_ arc box
+  in
+  let half = hStitch quad (hMirror quad) in
+  scale 1
+    $ map (fromMaybe skyblue)
+    $ vStitch half (vMirror half)
 
 
 main : Main
@@ -120,3 +143,7 @@ main = run do
     $ scale 5
     $ quadrants
     $ grid
+  savePngImage "glamis.png"
+    $ Image 1024 1024 RGB8 ∋_
+    $ focusAt 100 100
+    $ glamis
