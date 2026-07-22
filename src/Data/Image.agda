@@ -73,6 +73,10 @@ focusAt {i = i} {j} x y tile .runImage k l
 tile : ∀ {i j} → .{{NonZero i}} → .{{NonZero j}} → Image i j A → Image w h A
 tile = focusAt 0 0
 
+translate : ∀ {i j} → .{{NonZero i}} → .{{NonZero j}} →
+            ℕ → ℕ → Image i j A → Image i j A
+translate = focusAt
+
 setPixel : Fin w → Fin h → A → Image w h A → Image w h A
 setPixel x y px tile .runImage k l with does (k ≡? x) | does (l ≡? y)
 ... | true | true = px
@@ -129,6 +133,15 @@ vLine w h x d px .runImage k l
 diagonal : (n d : ℕ) (px : A) → Image n n (Maybe A)
 diagonal n d px = hMirror $ mkImage {n} $ λ k l →
   if does (ℕ.∣ Fin.toℕ k - Fin.toℕ l ∣′ ℕ.<? d) then just px else nothing
+
+circ : (w h : ℕ) (x : Fin w) (y : Fin h) (r : ℕ) (d : ℕ) (px : A) → Image w h (Maybe A)
+circ w h x y r d px .runImage k l =
+  if does (ℕ.∣ ℕ.∣ Fin.toℕ k - Fin.toℕ x ∣ ℕ.^ 2 ℕ.+ ℕ.∣ Fin.toℕ l - Fin.toℕ y ∣ ℕ.^ 2 - r ℕ.^ 2 ∣′ ℕ.<? d) then just px else nothing
+
+disc : (w h : ℕ) (x : Fin w) (y : Fin h) (r : ℕ) (px : A) → Image w h (Maybe A)
+disc w h x y r px .runImage k l =
+  if does ((ℕ.∣ Fin.toℕ k - Fin.toℕ x ∣ ℕ.^ 2 ℕ.+ ℕ.∣ Fin.toℕ l - Fin.toℕ y ∣ ℕ.^ 2) ℕ.<? r ℕ.^ 2) then just px else nothing
+
 
 -- Taking the top left quadrant and producing a full rectangle by
 -- symmetries: e.g.  if the tile is the image '⬀', quadrants

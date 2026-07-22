@@ -21,17 +21,18 @@ module RGB8 where
 
   open RGB8 public
 
-  fullred     = [ 255 ,   0 ,   0 ]
-  fullgreen   = [   0 , 255 ,   0 ]
-  fullblue    = [   0 ,   0 , 255 ]
-  navy        = [  16 ,  24 , 107 ]
-  azur        = [  16 ,  82 , 214 ]
+  fullred     = [ 255 , 000 , 000 ]
+  fullgreen   = [ 000 , 255 , 000 ]
+  fullblue    = [ 000 , 000 , 255 ]
+  navy        = [ 016 , 024 , 107 ]
+  azur        = [ 016 , 082 , 214 ]
   cyan        = [ 157 , 247 , 247 ]
-  skyblue     = [  74 , 165 , 239 ]
-  yellow      = [ 255 , 255 ,  51 ]
-  black       = [   0 ,   0 ,   0 ]
+  skyblue     = [ 074 , 165 , 239 ]
+  yellow      = [ 255 , 255 , 051 ]
+  orange      = [ 255 , 172 , 028 ]
+  black       = [ 000 , 000 , 000 ]
   white       = [ 255 , 255 , 255 ]
-  purple      = [ 102 ,   0 , 102 ]
+  purple      = [ 102 , 000 , 102 ]
   parma       = [ 255 , 153 , 204 ]
   pastelGreen = [ 232 , 249 , 233 ]
 

@@ -130,6 +130,28 @@ glamis =
     $ vStitch half (vMirror half)
 
 
+stripes : (h : ℕ) → A → Image 6 (3 ℕ.+ h) (Maybe A)
+stripes h col = vMirror $
+  ((fill 3 3 nothing ∣ translate 3 0 (diagonal 3 1 (just col)))
+     ─ tile {w = 6} (diagonal 6 1 (just col)))
+  ◂ ((tile {w = 6} (diagonal 6 1 (just col)))
+  ◂ (hMirror (fill 5 1 nothing ∣ fill 1 1 (just col) ─ fill 6 (2 ℕ.+ h) nothing)))
+
+tartan : Image 48 48 RGB8
+tartan
+  = ( fill 1 48 (just black)
+    ∣ stripes 45 fullblue
+    ∣ stripes 45 fullblue
+    ∣ fill 1 48 (just black)
+    ∣ fill 6 48 nothing
+    ∣ fill 1 48 (just black)
+    ∣ stripes 45 fullblue
+    ∣ fill 1 48 (just black)
+    ∣ fill 20 48 nothing
+    )
+    ◂ ((fill 48 1 (just orange) ─ translate 0 1 (transpose (stripes 45 yellow)) ─ fill 48 1 (just orange) ─ fill 48 40 nothing)
+    ◂ fill 48 48 navy)
+
 main : Main
 main = run do
   savePngImage "flower.png"
@@ -147,3 +169,8 @@ main = run do
     $ Image 1024 1024 RGB8 ∋_
     $ focusAt 100 100
     $ glamis
+  savePngImage "tartan.png"
+    $ Image 1600 1600 RGB8 ∋_
+    $ tile
+    $ scale 5
+    $ tartan

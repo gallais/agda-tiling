@@ -14,6 +14,7 @@ Tiling DSL for Agda
 
 ## Examples
 
+![Tartan](examples/tartan.png)
 ![Flower tiling](examples/flower.png)
 
 ## History
