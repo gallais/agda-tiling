@@ -140,12 +140,12 @@ stripes h col = vMirror $
 tartan : Image 48 48 RGB8
 tartan
   = ( fill 1 48 (just black)
-    ∣ stripes 45 fullblue
-    ∣ stripes 45 fullblue
+    ∣ stripes 45 azur
+    ∣ stripes 45 azur
     ∣ fill 1 48 (just black)
     ∣ fill 6 48 nothing
     ∣ fill 1 48 (just black)
-    ∣ stripes 45 fullblue
+      ∣ stripes 45 azur
     ∣ fill 1 48 (just black)
     ∣ fill 20 48 nothing
     )
