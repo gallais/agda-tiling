@@ -150,7 +150,7 @@ tartan
     ∣ fill 20 48 nothing
     )
     ◂ ((fill 48 1 (just orange) ─ translate 0 1 (transpose (stripes 45 yellow)) ─ fill 48 1 (just orange) ─ fill 48 40 nothing)
-    ◂ fill 48 48 navy)
+    ◂ (tile (diagonal 2 1 black) ◂ fill 48 48 navy))
 
 main : Main
 main = run do
