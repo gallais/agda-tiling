@@ -149,7 +149,14 @@ tartan
     ∣ fill 1 48 (just black)
     ∣ fill 20 48 nothing
     )
-    ◂ ((fill 48 1 (just orange) ─ translate 0 1 (transpose (stripes 45 yellow)) ─ fill 48 1 (just orange) ─ fill 48 40 nothing)
+    ◂ ((fill 48 1 (just orange)
+         ─ translate 0 1 (transpose (stripes 45 yellow))
+         ─ fill 48 1 (just orange)
+       ─ fill 48 32 nothing
+       ─ fill 48 1 (just orange)
+         ─ tile {h = 1} (fill 1 1 (just yellow) ∣ fill 1 1 nothing)
+         ─ fill 48 1 (just orange)
+       ─ fill 48 5 nothing)
     ◂ (tile (diagonal 2 1 black) ◂ fill 48 48 navy))
 
 main : Main
