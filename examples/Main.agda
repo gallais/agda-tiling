@@ -170,7 +170,7 @@ main = run do
     $ focusAt 100 100
     $ glamis
   savePngImage "tartan.png"
-    $ Image 1600 1600 RGB8 ∋_
-    $ tile
+    $ Image 1280 512 RGB8 ∋_
+    $ focusAt 80 100
     $ scale 5
     $ tartan
